@@ -1,0 +1,52 @@
+---
+title: "toolik_chlorophyll_summary"
+format: html
+editor: visual
+execute: 
+  echo: true
+  warning: false
+---
+
+## Load Libraries
+```{r}
+library(tidyverse)
+library(janitor)
+library(here)
+library(skimr)
+```
+
+## Read in the data
+```{r}
+
+toolik_chlorophyll <- read_csv(here("data", 
+                                    "data-raw", 
+                                    "toolik_chlorophyll.csv"),
+                               na = c(".")) %>% 
+  clean_names() 
+  
+
+```
+
+```{r}
+skim(toolik_chlorophyll) 
+```
+
+```{r}
+
+chlorphyll_pprod_graph <- ggplot(data = toolik_chlorophyll, 
+                                 aes(x = active_chl_a_ug_l, 
+                                     y = pprod_mg_available_c_m3_d)) +
+  geom_point()
+
+chlorphyll_pprod_graph
+
+```
+
+```{r}
+ggsave(plot = chlorphyll_pprod_graph, 
+       here("figs", "my_first_plot.jpg"),
+            width = 8,
+            height = 8,
+            dpi = 800)
+```
+
